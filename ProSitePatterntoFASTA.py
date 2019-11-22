@@ -44,6 +44,8 @@ print("\n\n\n")
 print("\n\nUSER 1: Here is the list of genes matched by your submitted ProSite pattern, ignoring isoforms. \nWe will be using only the first 5 best matches to construct your phylogenetic tree.\n\n")
 for gene in striplist:
     print(gene)
+    
+print("\n\n\n")
 
 # Assign a variable to the first 5 results in the list of resulting genes
     
@@ -63,3 +65,26 @@ import webbrowser
 webbrowser.open_new(fastalink)
 
 # NEXT STEP: Write the content of the above link to a txt FASTA file
+# Using Beautiful Soup to do this!
+
+r1  = requests.get(fastalink)
+
+data1 = r1.text
+
+user1soup = str(BeautifulSoup(data1))
+
+user1soup = re.sub('<html><head></head><body>&gt;', '', user1soup)
+user1soup = re.sub('</body></html>', '', user1soup)
+
+print("\n\nHere are your top 5 matched sequences in FASTA format, USER 1:\n")
+print(user1soup)
+
+    
+print("\nNow we will use this FASTA sequence to generate a phylogenetic tree\n\n")
+
+
+text_file = open("User1FASTA.fsa", "w")
+n = text_file.write(user1soup)
+text_file.close()
+
+quit()
